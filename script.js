@@ -19,22 +19,22 @@ document.addEventListener('scroll', function() {
     mount2.style.marginBottom = -value * 1.2 + 'px'
 })
 
-// Основной JavaScript файл
 
-// Слушаем клик по кнопке
+
+// script.js
+
+// Ожидаем нажатия на кнопку "Сгенерировать"
 document.getElementById('generate').addEventListener('click', function() {
-    const totalNumbers = 10000000; // 10 миллионов чисел
+  const worker = new Worker('worker.js');
 
-    // Создаем и запускаем веб-работника
-    const worker = new Worker('worker.js');
-    
-    // Передаем количество чисел в веб-работника для обработки
-    worker.postMessage(totalNumbers);
+  // Получаем результат вычислений из воркера
+  worker.onmessage = function(event) {
+      document.getElementById('output').textContent = 'Среднее значение: ' + event.data;
+  };
 
-    // Получаем результат от веб-работника
-    worker.onmessage = function(event) {
-        const outputDiv = document.getElementById('output');
-        outputDiv.textContent = 'Срдний показатель сгенерированного массива: ' + event.data;
-    };
+  // Запускаем воркер для генерации чисел
+  worker.postMessage(10000000); // Передаем количество чисел для генерации
 });
+
+
 

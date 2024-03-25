@@ -1,27 +1,24 @@
-// Логика веб-работника (Web Worker)
+// worker.js
 
-// Функция для генерации случайного числа от 1 до 100
-function generateRandomNumber() {
-    return Math.floor(Math.random() * 100) + 1;
+// Функция для генерации случайных чисел
+function generateRandomNumbers(count, max) {
+  const numbers = [];
+  for (let i = 0; i < count; i++) {
+      numbers.push(Math.floor(Math.random() * max) + 1);
+  }
+  return numbers;
 }
 
-// Функция для генерации массива случайных чисел и вычисления среднего
-function generateRandomNumbersAndCalculateAverage(totalNumbers) {
-    let sum = 0;
-    const numbers = Array.from({ length: totalNumbers }, () => generateRandomNumber());
-    
-    numbers.forEach(number => {
-        sum += number;
-    });
-
-    const average = sum / totalNumbers;
-
-    // Отправляем результат обратно в основной поток
-    postMessage(average);
+// Функция для вычисления среднего значения
+function calculateAverage(numbers) {
+  const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+  return sum / numbers.length;
 }
 
-// Слушаем сообщения от основного потока
-onmessage = function(event) {
-    const totalNumbers = event.data;
-    generateRandomNumbersAndCalculateAverage(totalNumbers);
+// Получаем сообщение от основного потока
+self.onmessage = function(event) {
+  const count = event.data;
+  const numbers = generateRandomNumbers(count, 100); // Генерируем случайные числа от 1 до 100
+  const average = calculateAverage(numbers); // Вычисляем среднее значение
+  self.postMessage(average); // Отправляем результат обратно основному потоку
 };
