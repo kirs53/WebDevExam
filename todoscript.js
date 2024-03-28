@@ -7,7 +7,6 @@ const mount2 = document.querySelector('.mount2')
 
 document.addEventListener('scroll', function() {
     let value = window.scrollY
-    // console.log(value)
     title.style.marginTop = value * 1.1 + 'px'
 
     leaf1.style.marginLeft = -value + 'px'
@@ -34,7 +33,7 @@ const renderTasks = () => {
         todoList.appendChild(li);
 
         li.addEventListener('click', async () => {
-            const newTask = prompt('Введите новый текст для задачи:');
+            const newTask = prompt('Введите новый текст:');
             if (newTask) {
                 await editTask(index, newTask);
                 renderTasks();
@@ -43,7 +42,7 @@ const renderTasks = () => {
 
         li.addEventListener('contextmenu', async (e) => {
             e.preventDefault();
-            const confirmation = confirm('Вы уверены, что хотите удалить задачу?');
+            const confirmation = confirm('Точно удалить задачу?');
             if (confirmation) {
                 await deleteTask(index);
                 renderTasks();

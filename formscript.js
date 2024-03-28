@@ -17,12 +17,3 @@ document.addEventListener('scroll', function() {
     mount1.style.marginBottom = -value * 1.1 + 'px'
     mount2.style.marginBottom = -value * 1.2 + 'px'
 })
-
-document.getElementById('generate').addEventListener('click', function() {
-  const worker = new Worker('worker.js');
-
-  worker.onmessage = function(event) {
-      document.getElementById('output').textContent = 'Среднее значение: ' + event.data;
-  };
-  worker.postMessage(10000000); 
-});
